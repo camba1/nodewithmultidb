@@ -1,0 +1,16 @@
+{
+  "name": "NodeWithMultiDB",
+  "version": "0.0.1",
+  "description": "Playing with node and Sql Server",
+  "main": "./src/index.js",
+  "author": "Juan Peredo Bolbeck LLC <jperedo@Bolbeck.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "pg": "^7.12.0",
+    "mysql": "^2.17.1",
+    "express": "^4.17.1"
+  }
+}
