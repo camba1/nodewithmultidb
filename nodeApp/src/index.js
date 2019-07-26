@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-
+const postgresdb = require('./postgresData')
 
 // Constants
 const PORT = 3000;
@@ -24,7 +24,8 @@ app.get('/mysql', (req, res) => {
 );
 
 app.get('/postgres', (req, res) => {
-  res.send('Hello world3!\n');
+  postgresdb.getPostgresData(req, res)
+  //res.send('Hello world3!\n');
   }
 );
 
