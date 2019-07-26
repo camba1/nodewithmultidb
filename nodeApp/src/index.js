@@ -2,6 +2,7 @@
 
 const express = require('express');
 const postgresdb = require('./postgresData')
+const mySqldb = require('./mySqlData');
 
 // Constants
 const PORT = 3000;
@@ -19,7 +20,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/mysql', (req, res) => {
-  res.send('Hello world2!\n');
+  mySqldb.getMySqlData(req, res)
+  //res.send('Hello world2!\n');
   }
 );
 
