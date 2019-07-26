@@ -3,6 +3,7 @@ version: "3"
 services:
   mySqlDB:
     image: mysql
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
     container_name: nodemysql
     environment:
@@ -16,12 +17,12 @@ services:
     restart: always
     container_name: nodepostgres
     environment:
-      - MPOSTGRES_PASSWORD=TestDB@home2
+      - POSTGRES_PASSWORD=TestDB@home2
     volumes:
       - ./postgresDB:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-  nodeforsqlserver:
+  mynodeapp:
     build: ./nodeApp
     depends_on:
       - mySqlDB
