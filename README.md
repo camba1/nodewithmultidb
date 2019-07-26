@@ -53,11 +53,10 @@ rm -rf *
 ```
 - Double check that the containers have been removed: `docker ps -a`
 - Remove node image:
-
-  ```
+```
 docker image ls
-  docker rmi nodewithmultidb_mynodeapp
-  docker image ls
+docker rmi nodewithmultidb_mynodeapp
+docker image ls
 ```
 
 At this point you have removed everything from the machine and are free to start over if needed.
