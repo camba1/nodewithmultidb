@@ -53,6 +53,7 @@ rm -rf *
 ```
 - Double check that the containers have been removed: `docker ps -a`
 - Remove node image:
+
   ```
 docker image ls
   docker rmi nodewithmultidb_mynodeapp
