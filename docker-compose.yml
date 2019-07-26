@@ -21,3 +21,16 @@ services:
       - ./postgresDB:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  nodeforsqlserver:
+    build: ./nodeApp
+    depends_on:
+      - mySqlDB
+      - myPostgresDB
+    container_name: mynodemultidb
+    command: nodemon -L
+    volumes:
+      - ./nodeApp:/code
+    ports:
+      - "8000:8000"
+      - "5858:5858"
+      - "3000:3000"

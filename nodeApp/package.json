@@ -1,7 +1,7 @@
 {
   "name": "NodeWithMultiDB",
   "version": "0.0.1",
-  "description": "Playing with node and Sql Server",
+  "description": "Playing with node and multiple DBs",
   "main": "./src/index.js",
   "author": "Juan Peredo Bolbeck LLC <jperedo@Bolbeck.com>",
   "license": "MIT",
