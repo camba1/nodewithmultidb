@@ -12,6 +12,16 @@ services:
       - ./mySqlDB:/var/lib/mysql
     ports:
       - "3306:3306"
+  myMariaDB:
+    image: mariadb
+    restart: always
+    container_name: nodemariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=TestDB@home2
+    volumes:
+      - ./MariaDB:/var/lib/mysql
+    ports:
+      - "3307:3306"
   myPostgresDB:
     image: postgres
     restart: always
@@ -27,6 +37,7 @@ services:
     depends_on:
       - mySqlDB
       - myPostgresDB
+      - myMariaDB
     container_name: mynodemultidb
     command: nodemon -L
     volumes:

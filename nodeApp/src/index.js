@@ -3,14 +3,12 @@
 const express = require('express');
 const postgresdb = require('./postgresData')
 const mySqldb = require('./mySqlData');
+const mymariadb = require('./mariadbData');
 
 // Constants
 const PORT = 3000;
 const HOST = '0.0.0.0';
 
-//MySql connection configuration
-
-//Postgres connection configuration
 
 
 // App
@@ -21,13 +19,16 @@ app.get('/', (req, res) => {
 
 app.get('/mysql', (req, res) => {
   mySqldb.getMySqlData(req, res)
-  //res.send('Hello world2!\n');
+  }
+);
+
+app.get('/mariadb', (req, res) => {
+  mymariadb.getmariadbData(req, res)
   }
 );
 
 app.get('/postgres', (req, res) => {
   postgresdb.getPostgresData(req, res)
-  //res.send('Hello world3!\n');
   }
 );
 
