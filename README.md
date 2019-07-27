@@ -13,7 +13,27 @@ The repo has a docker-compose file that will initialize:
 
 ## Working with dockerfile
 
-We create a dockerfile that will automate the creation of a node application using the official nodejs image from docker hub.
+We create a dockerfile that will automate the creation of a node application using the official nodejs image from docker hub. The required steps are:
+
+- Creation of a `nodeApp` folder
+- Creation of a `src` sub-folder under the `nodeApp` folder
+- Creation of a `package.json` file in the nodejs project root directory (`/nodeApp`)
+  - If you do not have nodejs installed in your machine, just create one manually
+  - Make sure to add dependencies for the libraries we will need
+    - `mysql`: library to connect to mySql Database
+    - `pg`: library to connect to postgres Database
+    - `mariadb`: library to connect to MariaDB Database
+    - `express`: minimal node library to simplify work with http servers
+- Creation of a `Dockerfile` in the nodejs project root directory (`/nodeApp`)
+  - The docker file will create our container based on the nodejs official image
+  - It will copy all our code to the image
+  - Setup the necessary libraries
+  - setup the image to start the nodejs server on container startup
+  - Note that it will also include the nodemon library to enable hot reload of the server as we make changes to our codebase
+  - Once all this is setup we build our image (assuming that we are in teh same folder as our docker file): `docker build -t nodeforsqlserver .`
+  - We can then create a container based on the image we just created: `docker run -p 3000:3000 --name mynode nodeforsqlserver`
+
+
 
 ## Working with docker-compose
 
@@ -31,10 +51,12 @@ Here are the steps to launch the containers:
 - In the root directory of the project (where the docker-compose file lives):`docker-compose up`
 - This will launch each of the containers one after the other. All messages that come from the initialization of the databases and containers will be displayed on the window
 - Once it is finished, we  need to setup some sample data in the databases so that we can pull it from the node app.
+- Note that the first time we run the containers, the nodejs container may throw an error. This is because the `node_modules` folder does not exist in the directory that we mapped from the host machine to the container. To correct this, connect to the container `docker exec -it <containerName> 'bash' `and run `npm install`. This will create the `node_modules` folder in the container and thus in our mapped directory in the host.
 - Connect to each DB in TablePlus ( or your favorite sql editor) and run the scripts in the 'sqlscripts' folder:
   - `mySql_DataSetup.sql`
   - `postgres_Datasetup.sql`
   - `mariadb_Datasetup.sql`
+- Note that the sql scripts only need to run once since we have volumes setup to persist the data between container launches
 - Once the scripts have been run, we can launch the app by going to `localhost:3000` in the browser
 
 ### Remove all containers and re-start whole process
