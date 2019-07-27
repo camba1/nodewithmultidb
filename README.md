@@ -50,6 +50,9 @@ rm -rf *
 cd ..
 cd postgresDB
 rm -rf *
+cd ..
+cd MariaDB
+rm -rf *
 ```
 - Double check that the containers have been removed: `docker ps -a`
 - Remove node image:
