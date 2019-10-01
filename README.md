@@ -121,3 +121,47 @@ docker run --name nginxfornode1 -p 5000:80 nginxfornode
 At that point, we just point the browser to localhost:5000 and watch the magic unfold
 
 ## Using docker-compose
+
+Modify the nginx config file to use the container name to refer to the balanced applications. They are now in the same network and thus can just be refered by name:
+
+```
+events {
+
+}
+
+http {
+  upstream balancedapp {
+      server mynodemultidb:3000 weight=1;
+      server mynodemultidbtwo:3000 weight=1;
+  }
+
+  server {
+      location / {
+        proxy_pass http://balancedapp;
+      }
+  }
+}
+```
+Expose the dependent node images internally so that nginx can access them.
+```yaml
+expose:
+  - "3000"
+```
+Add a service to the docker-compose:
+
+```yaml
+mynginx:
+  image: nginx
+  depends_on:
+    - mySqlDB
+    - myPostgresDB
+    - myMariaDB
+    - mynodeapp
+    - mynodeapptwo
+  container_name: mynginxmultidb
+  volumes:
+    - ./nginx/nginxconfig:/etc/nginx/
+  ports:
+    - "5000:80"
+```
+We use the default nginx image, add the needed dependencies, map the volume to the config file and open port 80 in port 5000
