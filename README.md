@@ -59,7 +59,7 @@ Here are the steps to launch the containers:
 - Note that the sql scripts only need to run once since we have volumes setup to persist the data between container launches
 - Once the scripts have been run, we can launch the app by going to `localhost:3000` in the browser
 
-### Remove all containers and re-start whole process
+## Remove all containers and re-start whole process
 
 If for some reason we want to start fresh, like if we had an error, we can follow the follwing steps:
 
@@ -85,3 +85,39 @@ docker image ls
 ```
 
 At this point you have removed everything from the machine and are free to start over if needed.
+
+# Adding Nginx support
+
+## Using a dockerfile
+
+nginx will be used as a rverse proxy and load balancer for multiple apps. The first step is to create a configuration file (_nginx/nginx.config_) that will tell nginx what to do:
+
+```
+upstream balancedapp {
+    server 172.17.0.1:3000 weight=1;
+    server 172.17.0.1:3001 weight=1;
+}
+
+server {
+    location / {
+      proxy_pass http://balancedapp;
+    }
+}
+```
+In the code above, anytime there is a hit to the root of our site ('/'), we redirect to one of the sites in the balacnedapp section of the configuration. In this case it is pointing to ports 3000 and 3001 of the usual docker ip address. Since we did not specify how to load balance the requests, nginx will just use round robin assignments.
+
+Then we build the docker file:
+```
+FROM nginx
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+```
+This uses the default nginx image and replaces the default configuration file with our custom configuration and rebuilds the image.
+Finally, we can run any images we want to load balance on ports 3000 and 3001 and then build & start nginx with:
+```
+docker build -t nginxfornode .
+docker run --name nginxfornode1 -p 5000:80 nginxfornode
+```
+At that point, we just point the browser to localhost:5000 and watch the magic unfold
+
+## Using docker-compose
