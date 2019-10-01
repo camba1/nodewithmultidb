@@ -9,12 +9,13 @@ const mymariadb = require('./mariadbData');
 const PORT = 3000;
 const HOST = '0.0.0.0';
 
-
+const os = require("os");
+var hostname = os.hostname();
 
 // App
 const app = express();
 app.get('/', (req, res) => {
-  res.send('Hello world!\n');
+  res.send(`Hello world!\n from host ${hostname}`);
 });
 
 app.get('/mysql', (req, res) => {
