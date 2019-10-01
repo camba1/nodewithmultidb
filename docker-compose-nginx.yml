@@ -47,11 +47,12 @@ services:
       - "5858:5858"
       - "3000:3000"
   mynodeapptwo:
-    build: ./nodeApp
+    image: nodewithmultidb_mynodeapp
     depends_on:
       - mySqlDB
       - myPostgresDB
       - myMariaDB
+      - mynodeapp
     container_name: mynodemultidbtwo
     command: nodemon -L
     volumes:
