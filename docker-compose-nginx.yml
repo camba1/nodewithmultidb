@@ -46,6 +46,8 @@ services:
       - "8000:8000"
       - "5858:5858"
       - "3000:3000"
+    expose:
+      - "3000"
   mynodeapptwo:
     image: nodewithmultidb_mynodeapp
     depends_on:
@@ -61,3 +63,18 @@ services:
       - "8001:8000"
       - "5859:5858"
       - "3001:3000"
+    expose:
+      - "3000"
+  mynginx:
+    image: nginx
+    depends_on:
+      - mySqlDB
+      - myPostgresDB
+      - myMariaDB
+      - mynodeapp
+      - mynodeapptwo
+    container_name: mynginxmultidb
+    volumes:
+      - ./nginx/nginxconfig:/etc/nginx/
+    ports:
+      - "5000:80"
